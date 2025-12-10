@@ -57,9 +57,10 @@ The workflow is triggered automatically on a `git push` to the `main` branch. It
    - Services for frontend, backend, PostgreSQL, Redis  
    - Route for frontend  
 
-**Notes:**  
-- Currently using **public GHCR images**; future improvement: **private images** with `imagePullSecrets`.  
-- Deployment YAMLs reference new image tags, so OpenShift runs the latest version automatically.
+**Future improvements:**  
+- Make GHCR container images private and configure OpenShift authentication to pull the containers, currently using public GHCR images.
+- Only apply YAML files that were changed.  
+- Restart deployments when ConfigMaps or Secrets are updated. 
 
 ---
 
