@@ -22,16 +22,47 @@ This project is based on the Guestbook application and demonstrates deployment o
 ## Solution Approach
 
 ### 1. GitHub Actions Workflow
-The workflow is triggered automatically on a `git push` to the repository. The steps include:
+The workflow is triggered automatically on a `git push` to the `main` branch. It has three jobs: **frontend**, **backend**, and **deployment**.
 
-1. Build **Backend container**  
-2. Build **Frontend container**  
-3. Publish both containers to **GHCR**  
-   - Currently using **public images**  
-   - In the future, images will be **private**, using authentication and `imagePullSecrets` in the YAML files  
-4. Deploy the updated images to **OpenShift**  
-   - After publishing, the deployment YAML files are updated to reference the new images  
-   - Deployments use the updated image tags to run the latest version of the application
+**Frontend Job:**
+1. Checkout repository  
+2. Build frontend Docker image: `docker build -t frontend:${{ github.sha }} ./frontend`  
+3. Tag images for GHCR:
+   - `ghcr.io/ranper85/guest2-frontend:${{ github.sha }}`
+   - `ghcr.io/ranper85/guest2-frontend:latest`
+4. Login to GHCR using `DOCKER_TOKEN` secret  
+5. Push both tags to GHCR  
+
+**Backend Job:**
+1. Checkout repository  
+2. Build backend Docker image: `docker build -t backend:${{ github.sha }} ./backend`  
+3. Tag images for GHCR:
+   - `ghcr.io/ranper85/guest2-backend:${{ github.sha }}`
+   - `ghcr.io/ranper85/guest2-backend:latest`
+4. Login to GHCR using `DOCKER_TOKEN` secret  
+5. Push both tags to GHCR  
+
+<img width="1421" height="486" alt="Screenshot 2025-12-10 at 13 53 42" src="https://github.com/user-attachments/assets/40b7c8d5-efde-4faa-a895-f65810dbcb66" />
+
+**Deployment Job:**
+1. Checkout repository  
+2. Login to OpenShift using `OCP_TOKEN` secret:  
+   `oc login --token=${{ secrets.OCP_TOKEN }} --insecure-skip-tls-verify --server=https://api.devops24.cloud2.se:6443`  
+3. Switch to project: `oc project grupp1`  
+4. Apply all YAML files for deployment, services, config, and PVCs:
+   - Frontend & Backend deployments  
+   - PostgreSQL & Redis deployments  
+   - Persistent volume claims for PostgreSQL & Redis  
+   - ConfigMaps for backend  
+   - Services for frontend, backend, PostgreSQL, Redis  
+   - Route for frontend  
+
+**Notes:**  
+- Currently using **public GHCR images**; future improvement: **private images** with `imagePullSecrets`.  
+- Deployment YAMLs reference new image tags, so OpenShift runs the latest version automatically.
+
+---
+
 
 ### 2. OpenShift Deployment
 - **Deployments updated** to use the new image tags from GHCR  
@@ -39,7 +70,7 @@ The workflow is triggered automatically on a `git push` to the repository. The s
 - **Persistent volumes** configured for PostgreSQL data  
 - **Frontend exposed** externally via Route  
 
-<img width="1421" height="486" alt="Screenshot 2025-12-10 at 13 53 42" src="https://github.com/user-attachments/assets/40b7c8d5-efde-4faa-a895-f65810dbcb66" />
+
 
 <img width="1349" height="1018" alt="Screenshot 2025-12-10 at 13 53 20" src="https://github.com/user-attachments/assets/fdc05bde-b427-44e7-9b6a-5c32c05104d7" />
 
