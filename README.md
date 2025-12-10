@@ -26,7 +26,7 @@ The workflow is triggered automatically on a `git push` to the `main` branch. It
 
 **Frontend Job:**
 1. Checkout repository  
-2. Build frontend Docker image: `docker build -t frontend:${{ github.sha }} ./frontend`  
+2. Build frontend Docker image: `docker build -t frontend:${{ github.sha }} .`  
 3. Tag images for GHCR:
    - `ghcr.io/ranper85/guest2-frontend:${{ github.sha }}`
    - `ghcr.io/ranper85/guest2-frontend:latest`
@@ -35,7 +35,7 @@ The workflow is triggered automatically on a `git push` to the `main` branch. It
 
 **Backend Job:**
 1. Checkout repository  
-2. Build backend Docker image: `docker build -t backend:${{ github.sha }} ./backend`  
+2. Build backend Docker image: `docker build -t backend:${{ github.sha }} .`  
 3. Tag images for GHCR:
    - `ghcr.io/ranper85/guest2-backend:${{ github.sha }}`
    - `ghcr.io/ranper85/guest2-backend:latest`
