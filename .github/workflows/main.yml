@@ -73,8 +73,9 @@ jobs:
       - name: oc project
         run: oc project grupp1
       - name: oc apply
-        run: 
+        run: |
           oc apply -f frontend-deployment.yaml
+          oc apply -f backend-deployment.yaml
 
       
 
