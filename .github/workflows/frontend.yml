@@ -57,7 +57,24 @@ jobs:
           docker push ghcr.io/ranper85/guest2-backend:latest
 
 
+  
+  frontend-deployment:
+    name: frontend-deployment
+    runs-on: ubuntu-22.04
 
+    steps:
+      - uses: actions/checkout@v4
+      - name: deployment
+        run: |
+          pwd
+          ls
+      - name: oc login
+        run: oc login --token=${{ secrets.OCP_TOKEN }} --insecure-skip-tls-verify --server=https://api.devops24.cloud2.se:6443
+      - name: oc project
+        run: oc project rani
+      - name: oc apply
+        run: 
+          oc apply -f frontend-deployment.yaml
 
       
 
