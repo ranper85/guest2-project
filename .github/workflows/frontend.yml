@@ -30,6 +30,32 @@ jobs:
           docker push ghcr.io/ranper85/guest2-frontend:latest
 
 
+  backend:
+    name: Build backend
+    runs-on: ubuntu-22.04
+  
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          cd backend
+          docker build -t backend:${{ github.sha }} .
+
+      - name: Tag
+        run: |
+          docker tag backend:${{ github.sha }} ghcr.io/ranper85/guest2-backend:${{ github.sha }}
+          docker tag backend:${{ github.sha }} ghcr.io/ranper85/guest2-backend:latest
+
+      - name: Login to GHCR
+        run: docker login ghcr.io -u ranper85 -p ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Push
+        run: |
+          docker push ghcr.io/ranper85/guest2-backend:${{ github.sha }}
+          docker push ghcr.io/ranper85/guest2-backend:latest
+
 
 
 
