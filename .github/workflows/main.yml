@@ -57,7 +57,6 @@ jobs:
           docker push ghcr.io/ranper85/guest2-backend:latest
 
 
-
   deployment:
     name: deployment
     runs-on: ubuntu-22.04
