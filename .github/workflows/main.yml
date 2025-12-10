@@ -76,10 +76,25 @@ jobs:
         run: |
           oc apply -f frontend-deployment.yaml
           oc apply -f backend-deployment.yaml
-
+          oc apply -f postgres-deployment.yaml
+          oc apply -f redis-deployment.yaml
+          oc apply -f postgres-pvc.yaml
+          oc apply -f redis-pvc.yaml
+          oc apply -f backend-config.yaml
+          oc apply -f postgres-service.yaml
+          oc apply -f redis-service.yaml
+          oc apply -f backend-service.yaml
+          oc apply -f frontend-service.yaml
+          oc apply -f route.yaml
+        
+          
       
-
- 
+          
+         
+          
+     
+     
+     
           
 
        
