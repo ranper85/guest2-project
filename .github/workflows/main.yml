@@ -58,8 +58,8 @@ jobs:
 
 
 
-  frontend-deployment:
-    name: frontend-deployment
+  deployment:
+    name: deployment
     runs-on: ubuntu-22.04
 
     steps:
